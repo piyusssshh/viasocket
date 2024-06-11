@@ -37,6 +37,20 @@
         @apply px-4;
     }
 }
+.bg-container {
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    @media only screen and (max-width: 1280px) {
+        @apply px-12;
+    }
+    @media only screen and (max-width: 780px) {
+        @apply px-6;
+    }
+    @media only screen and (max-width: 480px) {
+        @apply px-0;
+    }
+}
 
 .py-container {
     @apply py-24;

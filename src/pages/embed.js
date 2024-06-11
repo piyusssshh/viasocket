@@ -122,20 +122,20 @@ export default function Embed() {
     const [selectedFeature, setSelectedFeature] = useState(emebed?.features[0].slug);
     return (
         <>
-            <div className=" my">
-                <div className="flex flex-col gap-10 w-4/5 my-16 container">
+            <div className=" ">
+                <div className="flex flex-col lg:gap-10 gap-4 md:w-4/5 w-full my-4 container">
                     <div className="flex flex-col gap-1">
                         <span className="text-2xl">Embed</span>
-                        <h1 className="text-6xl font-semibold lh-1">
+                        <h1 className="lg:text-6xl text-4xl font-semibold lh-1">
                             Bring third-party app integration, marketplace or No-code automation into your SaaS
                         </h1>
                     </div>
 
-                    <h2 className="text-2xl">
+                    <h2 className="lg:text-2xl text-xl">
                         With Viasocket embedding, your users can easily connect third-party apps with your SaaS tool to
                         automate tasks without leaving your platform.
                     </h2>
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 flex-wrap">
                         <Link href={'/'}>
                             <button className="btn btn-accent btn-md">
                                 Talk to us <MdChevronRight />{' '}
@@ -147,23 +147,39 @@ export default function Embed() {
                             </button>
                         </Link>
                     </div>
-                    <div className="flex items-center gap-8">
-                        <span className="flex items-center gap-1 text-xl">
-                            <MdOutlineTimer />
+                    <div className="flex items-center lg:gap-8 md:gap-6 gap-4 flex-wrap">
+                        <span className="flex items-center gap-1  md-text-xl text-sm">
+                            <MdOutlineTimer fontSize={22} />
                             30 mins of code to bring embedding
                         </span>
-                        <span className="flex items-center gap-1  text-xl">
-                            <MdAutoGraph />
+                        <span className="flex items-center gap-1  md-text-xl text-sm">
+                            <MdAutoGraph fontSize={22} />
                             Higher retention rate
                         </span>
-                        <span className="flex items-center gap-1  text-xl">
-                            <MdBarChart />
+                        <span className="flex items-center gap-1  md-text-xl text-sm">
+                            <MdBarChart fontSize={22} />
                             Competitive benefits
                         </span>
                     </div>
                 </div>
 
-                <div className="flex flex-row container my-20 items-center">
+                <div className=" container my-20 items-center md:hidden grid sm:grid-cols-2 grid-cols-1 gap-6">
+                    {emebed.features.map((feature, i) => {
+                        return (
+                            <div className="w-full p-6 rounded flex flex-col gap-6 bg-white">
+                                <h2 className="text-2xl font-semibold">{feature?.name}</h2>
+                                <Image
+                                    src={`/assets/img/pages/embed/feature-${feature?.slug}.svg`}
+                                    className="w-full"
+                                    width={1080}
+                                    height={1080}
+                                    alt={'hello'}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className="md:flex hidden flex-row container my-20 items-center">
                     <div className="w-full flex items-center justify-center">
                         <Image
                             src={`/assets/img/pages/embed/feature-${selectedFeature}.svg`}
@@ -179,7 +195,7 @@ export default function Embed() {
                                 <>
                                     <button
                                         onClick={() => setSelectedFeature(feature?.slug)}
-                                        className={`${feature?.slug === selectedFeature ? 'text-black' : ' text-[#64869B]'} text-2xl text-start  py-2 px-8 border-b-2 flex  items-center justify-between font-semibold `}
+                                        className={`${feature?.slug === selectedFeature ? 'text-black' : ' text-[#64869B]'} lg:text-2xl text-start  py-2 md:px-8 px-4 border-b-2 flex  items-center justify-between font-semibold `}
                                     >
                                         {feature?.name}{' '}
                                         {feature?.slug === selectedFeature && (
@@ -194,38 +210,40 @@ export default function Embed() {
                 <div className="bg-white py-20">
                     <div className="container flex flex-col gap-20">
                         <div className="flex flex-col gap-2">
-                            <h2 className="text-4xl font-semibold">How it works</h2>
-                            <p className="text-2xl">
+                            <h2 className="lg:text-4xl text-3xl font-semibold">How it works</h2>
+                            <p className="lg:text-2xl text-xl">
                                 20 Years in SaaS Taught Us: Integrations Are Vital & Often Tough. With Embed, We Made
                                 Them Simple.
                             </p>
                         </div>
-                        <div className="grid grid-cols-3 gap-8">
+                        <div className="grid lg:grid-cols-3 grid-cols-1 gap-8 flex-wrap">
                             {emebed?.howItWorks.map((content, index) => {
                                 return (
                                     <div className="flex flex-col gap-2" key={index}>
-                                        <div className="rounded-full w-16 border aspect-square flex items-center justify-center  text-2xl font-semibold bg-base-100  ">
+                                        <div className="rounded-full w-16 border aspect-square flex items-center justify-center  lg:text-2xl text-xl font-semibold bg-base-100  ">
                                             {index + 1}
                                         </div>
-                                        <h3 className="text-2xl font-semibold">{content?.name}</h3>
-                                        <p>{content?.des}</p>
+                                        <h3 className="lg:text-2xl text-xl font-semibold">{content?.name}</h3>
+                                        <p className="lg:text-xl ">{content?.des}</p>
                                     </div>
                                 );
                             })}
                         </div>
                     </div>
                 </div>
-                <div className=" container py-20">
-                    <div className="bg-white p-16">
+                <div className="bg-container py-20">
+                    <div className="md:bg-white lg:p-16 md:p-8 p-2">
                         <div>
                             <div className="flex flex-col gap-6">
-                                <h2 className="text-4xl font-semibold">How it works</h2>
-                                <p className="text-2xl">
+                                <h2 className="lg:text-4xl text-3xl font-semibold">
+                                    Upgrade your SaaS today, 100% free{' '}
+                                </h2>
+                                <p className="lg:text-2xl text-xl">
                                     Start using viaSocket Embed lifetime free for any 5 apps of your choice. We will
                                     begin charging once you've found the tool beneficial and wish to extend its use to
                                     additional apps
                                 </p>
-                                <div className="flex gap-3">
+                                <div className="flex gap-3 flex-wrap">
                                     <Link href={'/'}>
                                         <button className="btn btn-accent btn-md">
                                             Talk to us <MdChevronRight />{' '}
@@ -247,22 +265,33 @@ export default function Embed() {
                     </div>
                 </div>
                 <div className="bg-white py-20">
-                    <div className="container flex flex-col gap-6">
-                        <h2 className="text-4xl font-semibold">Usecases</h2>
+                    <div className="bg-container flex flex-col gap-6">
+                        <h2 className="lg:text-4xl text-3xl font-semibold md:px-0 px-2">Usecases</h2>
                         <div className="flex flex-col gap-24">
                             {emebed?.usecases.map((usecase, index) => {
                                 return (
-                                    <div key={index} className="flex flex-row gap-12 items-center justify-center">
+                                    <div
+                                        key={index}
+                                        className="flex md:flex-row md:gap-6 lg:gap-12 gap-6 md items-center justify-center flex-col"
+                                    >
                                         <div className="flex flex-col gap-4">
-                                            {index === 0 && <MdOutlineSupportAgent fontSize={44} />}
-                                            {index === 1 && <MdOutlineExtension fontSize={44} />}
-                                            {index === 2 && <MdOutlineEngineering fontSize={44} />}
-                                            <h3 className="text-2xl font-semibold">{usecase?.heading}</h3>
-                                            <p className="text-xl">{usecase?.subheading}</p>
+                                            {index === 0 && (
+                                                <MdOutlineSupportAgent fontSize={44} className="md:mx-0 mx-2" />
+                                            )}
+                                            {index === 1 && (
+                                                <MdOutlineExtension fontSize={44} className="md:mx-0 mx-2" />
+                                            )}
+                                            {index === 2 && (
+                                                <MdOutlineEngineering fontSize={44} className="md:mx-0 mx-2" />
+                                            )}
+                                            <h3 className="lg:text-2xl text-xl font-semibold md:px-0 px-2">
+                                                {usecase?.heading}
+                                            </h3>
+                                            <p className="lg:text-xl md:px-0 px-2">{usecase?.subheading}</p>
                                             {usecase?.content?.length &&
                                                 usecase?.content.map((content, i) => {
                                                     return (
-                                                        <div className="bg-base-100 flex flex-col p-6 gap-2">
+                                                        <div className="bg-base-100 flex flex-col md:p-6 p-4 gap-2">
                                                             <h4 className="text-xl font-bold">{content?.title}</h4>
                                                             <p>{content?.des}</p>
                                                         </div>
@@ -272,7 +301,7 @@ export default function Embed() {
                                         <div className="w-full flex items-center justify-center">
                                             <Image
                                                 src={`/assets/img/pages/embed/usecase-${usecase?.slug}.svg`}
-                                                className="w-9/12"
+                                                className="xl:w-9/12 w-full md:p-0 p-2"
                                                 width={1080}
                                                 height={1080}
                                                 alt={usecase?.heading}
