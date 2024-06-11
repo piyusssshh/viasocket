@@ -123,15 +123,15 @@ export default function Embed() {
     return (
         <>
             <div className=" ">
-                <div className="flex flex-col lg:gap-10 gap-4 md:w-4/5 w-full my-4 container">
+                <div className="flex flex-col lg:gap-10 gap-4  my-4 container">
                     <div className="flex flex-col gap-1">
                         <span className="text-2xl">Embed</span>
-                        <h1 className="lg:text-6xl text-4xl font-semibold lh-1">
+                        <h1 className="lg:text-6xl text-4xl font-semibold lh-1 md:w-4/5 w-full">
                             Bring third-party app integration, marketplace or No-code automation into your SaaS
                         </h1>
                     </div>
 
-                    <h2 className="lg:text-2xl text-xl">
+                    <h2 className="lg:text-2xl text-xl md:w-4/5 w-full">
                         With Viasocket embedding, your users can easily connect third-party apps with your SaaS tool to
                         automate tasks without leaving your platform.
                     </h2>
