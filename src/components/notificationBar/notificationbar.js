@@ -1,3 +1,4 @@
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 import { getDbdashData } from '@/pages/api';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -9,8 +10,9 @@ export default function NotificationBar() {
     }, []);
 
     const getDbdashDataa = async () => {
-        const dbdashData = await getDbdashData('tblgw6ag9');
-        setData(dbdashData.data.rows);
+        const dbdashData = await getDataFromDBDash(['tblgw6ag9']);
+
+        setData(dbdashData[0]?.data?.rows);
     };
 
     const [loading, setLoading] = useState(true);

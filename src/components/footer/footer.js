@@ -1,31 +1,32 @@
-import { getDbdashData } from '@/pages/api'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-// import AlphabeticalComponent from '../alphabetSort/alphabetSort'
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const Footer = () => {
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(null);
     useEffect(() => {
-        getDbdashDataa()
-    }, [])
+        getDbdashDataa();
+    }, []);
 
     const getDbdashDataa = async () => {
-        const dbdashData = await getDbdashData('tbl6u2cba')
-        setData(dbdashData.data.rows)
-    }
+        const dbdashData = await getDataFromDBDash(['tbl6u2cba']);
+        console.log('🚀 ~ getDbdashDataa ~ dbdashData:', dbdashData);
+
+        setData(dbdashData[0]?.data?.rows);
+    };
 
     const groupedData = data?.reduce((acc, obj) => {
-        const groupName = obj.group_name
+        const groupName = obj.group_name;
         if (obj?.hidden === null) {
             if (!acc[groupName]) {
-                acc[groupName] = []
+                acc[groupName] = [];
             }
-            acc[groupName].push(obj)
+            acc[groupName].push(obj);
         }
 
-        return acc
-    }, {})
+        return acc;
+    }, {});
 
     const renderedGroups =
         groupedData &&
@@ -54,9 +55,9 @@ const Footer = () => {
                             )}
                         </div>
                     </div>
-                )
+                );
             }
-        })
+        });
     return (
         <>
             {/* {showAppsByTitle && (
@@ -85,17 +86,8 @@ const Footer = () => {
                     </div>
                     <div className="flex items-center  gap-2 w-full flex-wrap">
                         <span>A product of</span>
-                        <Link
-                            href="https://walkover.in/"
-                            target="_blank"
-                            aria-label="walkover"
-                        >
-                            <Image
-                                src="/assets/brand/walkover.svg"
-                                alt="walkover"
-                                width={100}
-                                height={20}
-                            />
+                        <Link href="https://walkover.in/" target="_blank" aria-label="walkover">
+                            <Image src="/assets/brand/walkover.svg" alt="walkover" width={100} height={20} />
                         </Link>
                     </div>
                 </div>
@@ -104,6 +96,6 @@ const Footer = () => {
                 </div>
             </div>
         </>
-    )
-}
-export default Footer
+    );
+};
+export default Footer;

@@ -2,10 +2,10 @@ import { MdMenu } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getDbdashData } from '@/pages/api';
 import styles from './navbar.module.scss';
 import NotificationBar from '../notificationBar/notificationbar';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
 const Navbar = ({ productData, pathArray }) => {
     let pageData = productData && productData.find((page) => page?.name?.toLowerCase() === pathArray[1]);
@@ -20,8 +20,8 @@ const Navbar = ({ productData, pathArray }) => {
     }, []);
 
     const getDbdashDataa = async () => {
-        const dbdashData = await getDbdashData('tbl7lj8ev');
-        setData(dbdashData.data.rows);
+        const dbdashData = await getDataFromDBDash(['tbl7lj8ev']);
+        setData(dbdashData[0]?.data?.rows);
     };
     var shorterData;
     if (data?.length > 0) {
