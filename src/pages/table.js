@@ -1,25 +1,8 @@
 import ProductComp from '@/components/productComp/productComp';
-import { getDbdashData } from './api';
 import GetStarted from '@/components/getStarted/getStarted';
 import MetaHeadComp from '@/components/metaHeadComp/metaHeadComp';
 import FAQSection from '@/components/faqSection/faqSection';
-export async function getServerSideProps() {
-    const IDs = ['tblsaw4zp', 'tblvgm05y', 'tblmsw3ci', 'tblvo36my', 'tbl2bk656', 'tblnoi7ng'];
-
-    const dataPromises = IDs.map((id) => getDbdashData(id));
-    const results = await Promise.all(dataPromises);
-
-    return {
-        props: {
-            trustedBy: results[0].data.rows,
-            getStartedData: results[1].data.rows,
-            productData: results[2].data.rows,
-            features: results[3].data.rows,
-            metaData: results[4].data.rows,
-            faqData: results[5].data.rows,
-        },
-    };
-}
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
 const Table = ({ trustedBy, getStartedData, productData, features, metaData, pathArray, faqData }) => {
     return (
@@ -46,3 +29,19 @@ const Table = ({ trustedBy, getStartedData, productData, features, metaData, pat
     );
 };
 export default Table;
+
+export async function getServerSideProps() {
+    const IDs = ['tblsaw4zp', 'tblvgm05y', 'tblmsw3ci', 'tblvo36my', 'tbl2bk656', 'tblnoi7ng'];
+    const results = await getDataFromDBDash(IDs);
+
+    return {
+        props: {
+            trustedBy: results[0].data.rows,
+            getStartedData: results[1].data.rows,
+            productData: results[2].data.rows,
+            features: results[3].data.rows,
+            metaData: results[4].data.rows,
+            faqData: results[5].data.rows,
+        },
+    };
+}

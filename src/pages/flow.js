@@ -1,18 +1,16 @@
-import { getDbdashData } from './api';
+import { useEffect, useState } from 'react';
+import Autocomplete from 'react-autocomplete';
+import { MdClose } from 'react-icons/md';
+import Image from 'next/image';
 import GetStarted from '@/components/getStarted/getStarted';
 import MetaHeadComp from '@/components/metaHeadComp/metaHeadComp';
-import Image from 'next/image';
-import { MdClose } from 'react-icons/md';
-import { useEffect, useState } from 'react';
 import { FeaturesGrid } from '@/components/featureGrid/featureGrid';
 import ComboGrid from '@/components/comboGrid/comboGrid';
 import Industries from '@/assets/data/categories.json';
-import Autocomplete from 'react-autocomplete';
 import FAQSection from '@/components/faqSection/faqSection';
-import { getBlogs } from '@/utils/getBlogs';
 import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
-const Flow = ({ getStartedData, features, pathArray, metaData, apps, faqData, blogs }) => {
+const Flow = ({ getStartedData, features, pathArray, metaData, apps, faqData }) => {
     if (apps.length > 0) {
         const [slectedApps, setSelectedApps] = useState([]);
         const [slectedIndus, setSelectedIndus] = useState();
@@ -67,7 +65,7 @@ const Flow = ({ getStartedData, features, pathArray, metaData, apps, faqData, bl
             }
         };
 
-        const formattedIndustries = Industries.industries.map((name, id) => ({ name: name, id: id + 1 }));
+        const formattedIndustries = Industries?.industries?.map((name, id) => ({ name: name, id: id + 1 }));
 
         const handleSelect = (val) => {
             const filterApp = apps.find((app) => app.name === val);
@@ -201,11 +199,7 @@ export default Flow;
 
 export async function getServerSideProps() {
     const IDs = ['tblsaw4zp', 'tblvgm05y', 'tblmsw3ci', 'tblvo36my', 'tbl2bk656', 'tblnoi7ng'];
-    const heyyyyyy = await getDataFromDBDash(IDs);
-    console.log('🚀 ~ getServerSideProps ~ heyyyyyy:', heyyyyyy);
-    const dataPromises = IDs.map((id) => getDbdashData(id));
-    const results = await Promise.all(dataPromises);
-
+    const results = await getDataFromDBDash(IDs);
     const apiHeaders = {
         headers: {
             'auth-key': process.env.NEXT_PUBLIC_INTEGRATION_KEY,
@@ -214,8 +208,6 @@ export async function getServerSideProps() {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_INTEGRATION_URL}/all?limit=200`, apiHeaders);
     const apps = await response.json();
-    const tag = 'viaSocket';
-    const blogs = getBlogs(tag);
 
     return {
         props: {
@@ -226,7 +218,6 @@ export async function getServerSideProps() {
             metaData: results[4].data.rows,
             faqData: results[5].data.rows,
             apps,
-            blogs,
         },
     };
 }

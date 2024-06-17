@@ -2,43 +2,12 @@ import TrustedBy from '@/components/trustedBy/trustedBy';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MdOutlineArrowForward } from 'react-icons/md';
-import { getDbdashData } from './api/index';
 import { MdArrowForward } from 'react-icons/md';
 import GetStarted from '@/components/getStarted/getStarted';
 import { FeaturesGrid } from '@/components/featureGrid/featureGrid';
 import MetaHeadComp from '@/components/metaHeadComp/metaHeadComp';
 import FAQSection from '@/components/faqSection/faqSection';
-
-export async function getServerSideProps() {
-    const IDs = [
-        'tblogeya1',
-        'tblwql8n1',
-        'tblwoqytc',
-        'tblvgm05y',
-        'tblmsw3ci',
-        'tblsaw4zp',
-        'tblvo36my',
-        'tbl2bk656',
-        'tblnoi7ng',
-    ];
-
-    const dataPromises = IDs.map((id) => getDbdashData(id));
-    const results = await Promise.all(dataPromises);
-
-    return {
-        props: {
-            products: results[0].data.rows,
-            testimonials: results[1].data.rows,
-            caseStudies: results[2].data.rows,
-            getStartedData: results[3].data.rows,
-            productData: results[4].data.rows,
-            trustedData: results[5].data.rows,
-            features: results[6].data.rows,
-            metaData: results[7].data.rows,
-            faqData: results[8].data.rows,
-        },
-    };
-}
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
 const Index = ({
     products,
@@ -257,3 +226,31 @@ const Index = ({
 };
 
 export default Index;
+
+export async function getServerSideProps() {
+    const IDs = [
+        'tblogeya1',
+        'tblwql8n1',
+        'tblwoqytc',
+        'tblvgm05y',
+        'tblmsw3ci',
+        'tblsaw4zp',
+        'tblvo36my',
+        'tbl2bk656',
+        'tblnoi7ng',
+    ];
+    const results = await getDataFromDBDash(IDs);
+    return {
+        props: {
+            products: results[0].data.rows,
+            testimonials: results[1].data.rows,
+            caseStudies: results[2].data.rows,
+            getStartedData: results[3].data.rows,
+            productData: results[4].data.rows,
+            trustedData: results[5].data.rows,
+            features: results[6].data.rows,
+            metaData: results[7].data.rows,
+            faqData: results[8].data.rows,
+        },
+    };
+}

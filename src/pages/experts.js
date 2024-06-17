@@ -1,33 +1,15 @@
-import { getDbdashData } from './api';
 import AgencyList from '@/components/agencyList/agnecyList';
 import MetaHeadComp from '@/components/metaHeadComp/metaHeadComp';
-import { MdArticle, MdChevronRight, MdOutlineArticle } from 'react-icons/md';
+import { MdChevronRight, MdOutlineArticle } from 'react-icons/md';
 import Link from 'next/link';
 import Image from 'next/image';
-
-export async function getServerSideProps() {
-    const IDs = ['tblajmg8e', 'tblmsw3ci', 'tbl2bk656', 'tblirrj24'];
-
-    const dataPromises = IDs.map((id) => getDbdashData(id));
-    const results = await Promise.all(dataPromises);
-
-    return {
-        props: {
-            agencies: results[0].data.rows,
-            rawPageData: results[1].data.rows,
-            metaData: results[2].data.rows,
-            expertsHelp: results[3].data.rows,
-        },
-    };
-}
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
 const Experts = ({ agencies, rawPageData, pathArray, metaData, expertsHelp }) => {
     let pageData = rawPageData.find((page) => page?.name?.toLowerCase() === pathArray[1]);
 
     let verifiedArr = [];
     let nonVerifiedArr = [];
-
-    // Iterate through the objects and categorize them
     if (agencies.length > 0) {
         agencies.forEach((obj) => {
             switch (obj.verified) {
@@ -128,3 +110,15 @@ const Experts = ({ agencies, rawPageData, pathArray, metaData, expertsHelp }) =>
     );
 };
 export default Experts;
+
+export async function getServerSideProps() {
+    const results = await getDataFromDBDash(IDs);
+    return {
+        props: {
+            agencies: results[0].data.rows,
+            rawPageData: results[1].data.rows,
+            metaData: results[2].data.rows,
+            expertsHelp: results[3].data.rows,
+        },
+    };
+}
