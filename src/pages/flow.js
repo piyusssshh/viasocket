@@ -10,9 +10,9 @@ import Industries from '@/assets/data/categories.json';
 import Autocomplete from 'react-autocomplete';
 import FAQSection from '@/components/faqSection/faqSection';
 import { getBlogs } from '@/utils/getBlogs';
+import { getDataFromDBDash } from '@/assets/libs/dbFunctions';
 
 const Flow = ({ getStartedData, features, pathArray, metaData, apps, faqData, blogs }) => {
-    console.log('🚀 ~ Flow ~ blogs:', blogs);
     if (apps.length > 0) {
         const [slectedApps, setSelectedApps] = useState([]);
         const [slectedIndus, setSelectedIndus] = useState();
@@ -201,7 +201,8 @@ export default Flow;
 
 export async function getServerSideProps() {
     const IDs = ['tblsaw4zp', 'tblvgm05y', 'tblmsw3ci', 'tblvo36my', 'tbl2bk656', 'tblnoi7ng'];
-
+    const heyyyyyy = await getDataFromDBDash(IDs);
+    console.log('🚀 ~ getServerSideProps ~ heyyyyyy:', heyyyyyy);
     const dataPromises = IDs.map((id) => getDbdashData(id));
     const results = await Promise.all(dataPromises);
 
@@ -213,7 +214,6 @@ export async function getServerSideProps() {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_INTEGRATION_URL}/all?limit=200`, apiHeaders);
     const apps = await response.json();
-
     const tag = 'viaSocket';
     const blogs = getBlogs(tag);
 
