@@ -242,15 +242,15 @@ export async function getServerSideProps() {
     const results = await getDataFromDBDash(IDs);
     return {
         props: {
-            products: results[0].data.rows,
-            testimonials: results[1].data.rows,
-            caseStudies: results[2].data.rows,
-            getStartedData: results[3].data.rows,
-            productData: results[4].data.rows,
-            trustedData: results[5].data.rows,
-            features: results[6].data.rows,
-            metaData: results[7].data.rows,
-            faqData: results[8].data.rows,
+            products: results[0]?.data?.rows,
+            testimonials: results[1]?.data?.rows,
+            caseStudies: results[2]?.data?.rows,
+            getStartedData: results[3]?.data?.rows,
+            productData: results[4]?.data?.rows,
+            trustedData: results[5]?.data?.rows,
+            features: results[6]?.data?.rows,
+            metaData: results[7]?.data?.rows,
+            faqData: results[8]?.data?.rows,
         },
     };
 }
