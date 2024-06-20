@@ -20,13 +20,13 @@ export async function getServerSideProps() {
 
     return {
         props: {
-            usecase: results[0]?.data?.rows,
+            usecases: results[0]?.data?.rows,
         },
     };
 }
 
 export default function Embed({ usecases }) {
-    console.log(usecase, 'results');
+    console.log(usecases, 'results');
     const [selectedFeature1, setSelectedFeature1] = useState('conditional-logic');
 
     const emebed = {
@@ -236,22 +236,21 @@ export default function Embed({ usecases }) {
                                     >
                                         <div className="flex flex-col gap-4">
                                             <IconComponent fontSize={44} className="md:mx-0 mx-2" />
-                                            <h3 className="lg:text-2xl text-xl font-semibold md:px-0 px-2">
-                                                {usecase?.heading}
-                                            </h3>
-                                            <p className="lg:text-xl md:px-0 px-2">{usecase?.subheading}</p>
-                                            {usecase?.content?.length &&
-                                                usecase?.content.map((content, i) => {
-                                                    return (
-                                                        <div
-                                                            className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
-                                                            key={i}
-                                                        >
-                                                            <h4 className="text-xl font-bold">{content?.title}</h4>
-                                                            <p>{content?.des}</p>
-                                                        </div>
-                                                    );
-                                                })}
+                                            {usecase?.main && (
+                                                <>
+                                                    <h3 className="lg:text-2xl text-xl font-semibold md:px-0 px-2">
+                                                        h3 {usecase?.usecase}
+                                                    </h3>
+                                                    <p className="lg:text-xl md:px-0 px-2">{usecase?.description}</p>
+                                                </>
+                                            )}
+
+                                            {!usecase?.main?.length && (
+                                                <div className="bg-base-100 flex flex-col md:p-6 p-4 gap-2">
+                                                    <h4 className="text-xl font-bold">{usecase?.usecase}</h4>
+                                                    <p>{usecase?.description}</p>
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="w-full flex items-center justify-center">
                                             <Image
