@@ -72,6 +72,24 @@ export default function Embed({ usecases }) {
             },
         ],
     };
+    const [checkUsecase, setCheckUsecase] = useState();
+    const [content, setContent] = useState();
+    var transformedUsecases = [];
+    if (usecases && usecases?.length) {
+        let mainUsecase;
+        let contentUsecases = [];
+
+        usecases.forEach((usecase) => {
+            if (usecase?.main) {
+                mainUsecase = usecase;
+            } else if (mainUsecase?.slug === usecase?.slug) {
+                contentUsecases.push(usecase);
+            }
+        });
+
+        setCheckUsecase(mainUsecase);
+        setContent(contentUsecases);
+    }
 
     const [selectedFeature, setSelectedFeature] = useState(emebed?.features[0].slug);
     return (
@@ -222,17 +240,7 @@ export default function Embed({ usecases }) {
                     <div className="bg-container flex flex-col gap-6">
                         <h2 className="lg:text-4xl text-3xl font-semibold md:px-0 px-2">Usecases</h2>
                         <div className="flex flex-col gap-24">
-                            {transformedUsecases.map((group, index) => {
-                                const { main, sub } = group;
-                                if (!main) return null;
-
-                                const IconComponent =
-                                    index === 0
-                                        ? MdOutlineSupportAgent
-                                        : index === 1
-                                            ? MdOutlineExtension
-                                            : MdOutlineEngineering;
-
+                            {transformedUsecases?.map((group, index) => {
                                 return (
                                     <div
                                         key={main.slug}
@@ -241,35 +249,36 @@ export default function Embed({ usecases }) {
                                         <div className="flex flex-col gap-4">
                                             <IconComponent fontSize={44} className="md:mx-0 mx-2" />
                                             <h3 className="lg:text-2xl text-xl font-semibold md:px-0 px-2">
-                                                {main.heading?main.heading:''}
+                                                {main.heading ? main.heading : ''}
                                             </h3>
-                                            <p className="lg:text-xl md:px-0 px-2">{main.subheading?main.subheading:''}</p>
-                                            {main.content?.length && main.content.map((content, i) => (
-                                                <div
-                                                    className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
-                                                    key={i}
-                                                >
-                                                    <h4 className="text-xl font-bold">{content.title?content.title:''}</h4>
-                                                    <p>{content.des?content.des:''}</p>
-                                                </div>
-                                            ))}
+                                            <p className="lg:text-xl md:px-0 px-2">
+                                                {main.subheading ? main.subheading : ''}
+                                            </p>
+                                            {main.content?.length &&
+                                                main.content.map((content, i) => (
+                                                    <div className="bg-base-100 flex flex-col md:p-6 p-4 gap-2" key={i}>
+                                                        <h4 className="text-xl font-bold">
+                                                            {content.title ? content.title : ''}
+                                                        </h4>
+                                                        <p>{content.des ? content.des : ''}</p>
+                                                    </div>
+                                                ))}
                                             {sub.map((content, i) => (
-                                                <div
-                                                    className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
-                                                    key={i}
-                                                >
-                                                    <h4 className="text-xl font-bold">{content.content.title?content.content.title:''}</h4>
-                                                    <p>{content.content.des?content.content.des:''}</p>
+                                                <div className="bg-base-100 flex flex-col md:p-6 p-4 gap-2" key={i}>
+                                                    <h4 className="text-xl font-bold">
+                                                        {content.content.title ? content.content.title : ''}
+                                                    </h4>
+                                                    <p>{content.content.des ? content.content.des : ''}</p>
                                                 </div>
                                             ))}
                                         </div>
                                         <div className="w-full flex items-center justify-center">
                                             <Image
-                                                src={`/assets/img/pages/embed/usecase-${main.slug?main.slug:''}.svg`}
+                                                src={`/assets/img/pages/embed/usecase-${main.slug ? main.slug : ''}.svg`}
                                                 className="xl:w-9/12 w-full md:p-0 p-2"
                                                 width={1080}
                                                 height={1080}
-                                                alt={main.heading?main.heading:''}
+                                                alt={main.heading ? main.heading : ''}
                                             />
                                         </div>
                                     </div>
@@ -282,4 +291,3 @@ export default function Embed({ usecases }) {
         </>
     );
 }
-a
