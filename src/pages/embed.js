@@ -20,13 +20,13 @@ export async function getServerSideProps() {
 
     return {
         props: {
-            usecase: results[0]?.data?.rows,
+            usecases: results[0]?.data?.rows,
         },
     };
 }
 
 export default function Embed({ usecases }) {
-    console.log(usecase, 'results');
+    console.log(usecases, 'results');
     const [selectedFeature1, setSelectedFeature1] = useState('conditional-logic');
 
     const emebed = {
