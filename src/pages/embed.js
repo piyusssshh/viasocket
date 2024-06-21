@@ -222,44 +222,54 @@ export default function Embed({ usecases }) {
                     <div className="bg-container flex flex-col gap-6">
                         <h2 className="lg:text-4xl text-3xl font-semibold md:px-0 px-2">Usecases</h2>
                         <div className="flex flex-col gap-24">
-                            {usecases?.map((usecase, index) => {
+                            {transformedUsecases.map((group, index) => {
+                                const { main, sub } = group;
+                                if (!main) return null;
+
                                 const IconComponent =
                                     index === 0
                                         ? MdOutlineSupportAgent
                                         : index === 1
-                                          ? MdOutlineExtension
-                                          : MdOutlineEngineering;
+                                            ? MdOutlineExtension
+                                            : MdOutlineEngineering;
+
                                 return (
                                     <div
-                                        key={index}
+                                        key={main.slug}
                                         className="flex md:flex-row md:gap-6 lg:gap-12 gap-6 md items-center justify-center flex-col"
                                     >
                                         <div className="flex flex-col gap-4">
                                             <IconComponent fontSize={44} className="md:mx-0 mx-2" />
                                             <h3 className="lg:text-2xl text-xl font-semibold md:px-0 px-2">
-                                                {usecase?.heading}
+                                                {main.heading?main.heading:''}
                                             </h3>
-                                            <p className="lg:text-xl md:px-0 px-2">{usecase?.subheading}</p>
-                                            {usecase?.content?.length &&
-                                                usecase?.content.map((content, i) => {
-                                                    return (
-                                                        <div
-                                                            className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
-                                                            key={i}
-                                                        >
-                                                            <h4 className="text-xl font-bold">{content?.title}</h4>
-                                                            <p>{content?.des}</p>
-                                                        </div>
-                                                    );
-                                                })}
+                                            <p className="lg:text-xl md:px-0 px-2">{main.subheading?main.subheading:''}</p>
+                                            {main.content?.length && main.content.map((content, i) => (
+                                                <div
+                                                    className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
+                                                    key={i}
+                                                >
+                                                    <h4 className="text-xl font-bold">{content.title?content.title:''}</h4>
+                                                    <p>{content.des?content.des:''}</p>
+                                                </div>
+                                            ))}
+                                            {sub.map((content, i) => (
+                                                <div
+                                                    className="bg-base-100 flex flex-col md:p-6 p-4 gap-2"
+                                                    key={i}
+                                                >
+                                                    <h4 className="text-xl font-bold">{content.content.title?content.content.title:''}</h4>
+                                                    <p>{content.content.des?content.content.des:''}</p>
+                                                </div>
+                                            ))}
                                         </div>
                                         <div className="w-full flex items-center justify-center">
                                             <Image
-                                                src={`/assets/img/pages/embed/usecase-${usecase?.slug}.svg`}
+                                                src={`/assets/img/pages/embed/usecase-${main.slug?main.slug:''}.svg`}
                                                 className="xl:w-9/12 w-full md:p-0 p-2"
                                                 width={1080}
                                                 height={1080}
-                                                alt={usecase?.heading}
+                                                alt={main.heading?main.heading:''}
                                             />
                                         </div>
                                     </div>
@@ -272,3 +282,4 @@ export default function Embed({ usecases }) {
         </>
     );
 }
+a
