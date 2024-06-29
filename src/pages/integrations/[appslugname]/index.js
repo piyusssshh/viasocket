@@ -17,8 +17,6 @@ import axios from 'axios';
 import BlogGrid from '@/components/blogGrid/blogGrid';
 
 const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, params, metaData, faqData }) => {
-    const [newBrandColor, setNewBrandColor] = useState('#F6F4EE');
-    const [mode, setMode] = useState('dark');
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         const fetchPosts = async () => {
@@ -30,70 +28,15 @@ const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, params, 
         };
         fetchPosts();
     }, []);
-    useEffect(() => {
-        if (combos?.plugins?.[pathArray[2]]?.brandcolor) {
-            setNewBrandColor(combos?.plugins?.[pathArray[2]]?.brandcolor);
-        }
-    }, []);
-    useEffect(() => {
-        setMode(GetColorMode(newBrandColor));
-    }, [newBrandColor]);
 
     //defined states
     const [plugin, setPlugin] = useState();
-    const [filteredData, setFilteredData] = useState([]);
-    const [visibleItems, setVisibleItems] = useState(25);
-    const [visibleComboItems, setVisibleComboItems] = useState(9);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('All');
-    const [loading, setLoading] = useState(false);
-    const [visibleCategories, setVisibleCategories] = useState(10);
-
-    const router = useRouter();
 
     const cardsData = combos?.combinations;
 
-    //fetch apps
-
-    //fetch apps
-
-    useEffect(() => {
-        setVisibleItems(25);
-    }, [selectedCategory]);
     useEffect(() => {
         setPlugin(combos?.plugins?.[pathArray[2]]);
     }, [combos, pathArray[2]]);
-
-    const handleLoadMore = () => {
-        setVisibleItems(visibleItems + 25);
-    };
-
-    const handleComboLoadMore = () => {
-        setVisibleComboItems(visibleComboItems + 3);
-    };
-
-    //search functions
-    const applyFilters = () => {
-        if (apps.length > 0) {
-            let filteredItems = apps.filter((item) => {
-                const nameMatches = item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-                const categoryMatches =
-                    selectedCategory === 'All' || item.category === selectedCategory || !item.category;
-                return nameMatches && categoryMatches;
-            });
-
-            setFilteredData(filteredItems);
-        }
-    };
-
-    useEffect(() => {
-        applyFilters();
-    }, [apps, searchTerm, selectedCategory]);
-
-    const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-    const handleCategoryClick = () => {
-        setCategoryDropdownOpen(!isCategoryDropdownOpen);
-    };
 
     const uniqueCategories = [
         'All',
@@ -180,36 +123,6 @@ const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, params, 
         'Video Conferencing',
         'Webinars',
     ];
-    const renderFilterOptions = () => {
-        return uniqueCategories.slice(0, visibleCategories).map((category) => (
-            <h6
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`lg:text-[20px] text-base cursor-pointer ${
-                    selectedCategory === category ? 'font-bold' : 'font-normal'
-                }`}
-            >
-                {category === 'Null' ? 'Other' : category}
-            </h6>
-        ));
-    };
-    const handleCategoryLoadMore = () => {
-        setVisibleCategories(visibleCategories + 10); // Increase the number of visible categories by 10
-    };
-
-    const handleCategoryItemClick = (category) => {
-        setSelectedCategory(category);
-        setCategoryDropdownOpen(false);
-    };
-
-    const handleLocalStore = (appName) => {
-        localStorage.setItem('selectedAppName', appName);
-    };
-
-    const openChatWidget = () => {
-        window.chatWidget.open();
-    };
-    // return <IntegrationsComp combinationData={combos} pluginData={[plugin]}/>;
 
     if (combos && !combos.error) {
         return (
@@ -220,53 +133,15 @@ const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, params, 
                     pathArray={pathArray}
                     plugin={[plugin]}
                 />
-                {plugin && <IntegrationsComp combinationData={combos} pluginData={[plugin]} />}
+                {plugin && (
+                    <IntegrationsComp
+                        combinationData={combos}
+                        pluginData={[plugin]}
+                        apps={apps}
+                        pathArray={pathArray}
+                    />
+                )}
 
-                <div className="py-14">
-                    <div className="container flex  flex-col gap-8">
-                        <h1 className="lg:text-3xl  text-2xl md:text-3xl font-semibold">
-                            Integrate with specific service
-                        </h1>
-                        <div className="flex flex-col gap-9">
-                            <div className="flex  gap-2 justify-center items-center bg-white border  py-4 px-6 rounded-md w-fit">
-                                <Image
-                                    className="w-[26px] h-[26px]"
-                                    src={plugin?.iconurl ? plugin?.iconurl : 'https://placehold.co/40x40'}
-                                    width={40}
-                                    height={40}
-                                    alt={combos?.plugins?.[pathArray[2]]?.name}
-                                />
-                                <h6 className="text-2xl font-bold capitalize">
-                                    {combos?.plugins?.[pathArray[2]]?.name}
-                                </h6>
-                            </div>
-                            <div className="px-8">
-                                <MdAdd fontSize={46} />
-                            </div>
-
-                            <IntegrationSearch
-                                loading={loading}
-                                selectedApp={pathArray[2]}
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                                renderFilterOptions={renderFilterOptions}
-                                isCategoryDropdownOpen={isCategoryDropdownOpen}
-                                handleCategoryClick={handleCategoryClick}
-                                selectedCategory={selectedCategory}
-                                handleCategoryItemClick={handleCategoryItemClick}
-                                filteredData={filteredData}
-                                handleLocalStore={handleLocalStore}
-                                visibleItems={visibleItems}
-                                apps={apps}
-                                handleLoadMore={handleLoadMore}
-                                uniqueCategories={uniqueCategories}
-                                visibleCategories={visibleCategories}
-                                handleCategoryLoadMore={handleCategoryLoadMore}
-                                pathArray={pathArray}
-                            />
-                        </div>
-                    </div>
-                </div>
                 {cardsData?.length > 0 && (
                     <div className="py-14 bg-white">
                         <div className="flex flex-col gap-9 container">
