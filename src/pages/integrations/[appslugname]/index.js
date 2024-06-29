@@ -13,11 +13,23 @@ import IntegrationHero from '@/components/integrations/integrationHero';
 import FAQSection from '@/components/faqSection/faqSection';
 import NoDataPluginComp from '@/components/noDataPluginComp/noDataPluginComp';
 import IntegrationsComp from '@/components/integrationsComp/integrationsComp';
+import axios from 'axios';
+import BlogGrid from '@/components/blogGrid/blogGrid';
 
-const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, metaData, faqData }) => {
+const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, params, metaData, faqData }) => {
     const [newBrandColor, setNewBrandColor] = useState('#F6F4EE');
     const [mode, setMode] = useState('dark');
-
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const tag = params.appslugname;
+            const defaultTag = 'integrations';
+            const res = await axios.get(`http://localhost:1111/api/fetch-posts?tag=${tag}&defaultTag=${defaultTag}`);
+            const posts = await res.data;
+            setPosts(posts);
+        };
+        fetchPosts();
+    }, []);
     useEffect(() => {
         if (combos?.plugins?.[pathArray[2]]?.brandcolor) {
             setNewBrandColor(combos?.plugins?.[pathArray[2]]?.brandcolor);
@@ -324,13 +336,20 @@ const IntegrationSlugPage = ({ getStartedData, combos, apps, pathArray, metaData
                         </div>
                     </div>
                 )}
-                <div className="bg-white py-20 ">
-                    {faqData && faqData.length > 0 && (
+                {posts?.length && (
+                    <div className="container mx-auto  py-12">
+                        {' '}
+                        <BlogGrid posts={posts} />
+                    </div>
+                )}
+                {faqData && faqData.length > 0 && (
+                    <div className="bg-white py-20 ">
                         <div className="container">
                             <FAQSection faqData={faqData} faqName={`[singleApp]`} />
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+
                 {/* abouttttt */}
                 <div className="py-14">
                     <div className="flex lg:flex-row md:flex-row flex-col gap-10 container justify-between">
@@ -444,6 +463,7 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
+            params,
             combos,
             apps,
             pathArray,
